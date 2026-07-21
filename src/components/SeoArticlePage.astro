@@ -1,0 +1,195 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ScreenshotPlaceholder from './ScreenshotPlaceholder.astro';
+import { siteConfig } from '../data/site';
+import {
+	articlePath,
+	getRelatedArticles,
+	type SeoArticle,
+} from '../data/seo-articles';
+import '../styles/seo-article.css';
+
+interface Props {
+	article: SeoArticle;
+}
+
+const { article } = Astro.props;
+const related = getRelatedArticles(article);
+const canonicalPath = articlePath(article.slug);
+const siteOrigin = Astro.site?.origin ?? siteConfig.url;
+const pageUrl = new URL(canonicalPath, `${siteOrigin}/`).href;
+const appStoreUrl = siteConfig.appStoreUrl;
+
+const articleLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: article.title,
+	description: article.description,
+	datePublished: article.datePublished,
+	dateModified: article.dateModified,
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': pageUrl,
+	},
+	author: {
+		'@type': 'Organization',
+		name: siteConfig.name,
+		url: siteOrigin,
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: siteConfig.name,
+		url: siteOrigin,
+		logo: {
+			'@type': 'ImageObject',
+			url: new URL('/app-icon.png', `${siteOrigin}/`).href,
+		},
+	},
+};
+
+const breadcrumbLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{
+			'@type': 'ListItem',
+			position: 1,
+			name: 'Home',
+			item: new URL('/', `${siteOrigin}/`).href,
+		},
+		{
+			'@type': 'ListItem',
+			position: 2,
+			name: article.title,
+			item: pageUrl,
+		},
+	],
+};
+---
+
+<Layout
+	title={article.title}
+	description={article.description}
+	canonicalPath={canonicalPath}
+	ogType="article"
+>
+	<script is:inline type="application/ld+json" set:html={JSON.stringify(articleLd)} />
+	<script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
+
+	<article class="seo container">
+		<nav class="seo__crumbs" aria-label="Breadcrumb">
+			<a href="/">Home</a>
+			<span aria-hidden="true">/</span>
+			<span>{article.title}</span>
+		</nav>
+
+		<header class="seo__header">
+			<h1>{article.title}</h1>
+			<p class="seo__intro">{article.intro}</p>
+		</header>
+
+		<div class="seo__media">
+			<ScreenshotPlaceholder
+				filename={article.screenshot.filename}
+				label={article.screenshot.label}
+				alt={article.screenshot.alt}
+			/>
+		</div>
+
+		<section class="seo__section" aria-labelledby="scenarios-heading">
+			<h2 id="scenarios-heading">Real-world scenarios</h2>
+			{
+				article.scenarios.map((scenario) => (
+					<div class="seo__block">
+						<h3>{scenario.heading}</h3>
+						<p>{scenario.body}</p>
+					</div>
+				))
+			}
+		</section>
+
+		<section class="seo__section" aria-labelledby="steps-heading">
+			<h2 id="steps-heading">Step-by-step</h2>
+			<ol class="seo__steps">
+				{
+					article.steps.map((step) => (
+						<li>
+							<h3>{step.title}</h3>
+							<p>{step.body}</p>
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		<section class="seo__section" aria-labelledby="help-heading">
+			<h2 id="help-heading">How VideoVault helps</h2>
+			<ul>
+				{article.howHelps.map((item) => <li>{item}</li>)}
+			</ul>
+		</section>
+
+		<section class="seo__section" aria-labelledby="limits-heading">
+			<h2 id="limits-heading">Limits and supported formats</h2>
+			<h3>What VideoVault does not do</h3>
+			<ul>
+				{article.limits.map((item) => <li>{item}</li>)}
+			</ul>
+			<h3>Formats</h3>
+			<ul>
+				{article.formats.map((item) => <li>{item}</li>)}
+			</ul>
+		</section>
+
+		<section class="seo__section" aria-labelledby="faq-heading">
+			<h2 id="faq-heading">FAQ</h2>
+			<div class="seo__faq">
+				{
+					article.faq.map((item) => (
+						<details>
+							<summary>{item.question}</summary>
+							<p>{item.answer}</p>
+						</details>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="seo__section" aria-labelledby="related-heading">
+			<h2 id="related-heading">Related articles</h2>
+			<ul class="seo__related">
+				{
+					related.map((item) => (
+						<li>
+							<a href={articlePath(item.slug)}>{item.title}</a>
+							<span>{item.description}</span>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<section class="seo__cta" aria-labelledby="cta-heading">
+			<h2 id="cta-heading">Get VideoVault on the App Store</h2>
+			<p>
+				Import local video and audio, organize playlists, extract M4A audio, and unlock
+				background playback with a one-time Lifetime Pro purchase — no subscription.
+			</p>
+			{
+				appStoreUrl ? (
+					<a class="btn btn-primary" href={appStoreUrl}>
+						Download on the App Store
+					</a>
+				) : (
+					<>
+						<p class="seo__cta-note">App Store listing is being prepared.</p>
+						<a class="btn btn-primary" href="/support/">
+							Download on the App Store
+						</a>
+					</>
+				)
+			}
+			<a class="btn btn-secondary" href="/">Explore VideoVault</a>
+		</section>
+	</article>
+</Layout>

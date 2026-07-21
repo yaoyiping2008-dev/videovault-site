@@ -1,0 +1,80 @@
+---
+import ScreenshotPlaceholder from './ScreenshotPlaceholder.astro';
+
+interface Props {
+	id: string;
+	title: string;
+	description: string;
+	screenshot: string;
+	label: string;
+	alt: string;
+	reverse?: boolean;
+	priority?: boolean;
+}
+
+const { id, title, description, screenshot, label, alt, reverse = false, priority = false } =
+	Astro.props;
+---
+
+<section class:list={['feature', reverse && 'feature--reverse']} id={id}>
+	<div class="container feature__grid">
+		<div class="feature__copy">
+			<h2>{title}</h2>
+			<p>{description}</p>
+		</div>
+		<div class="feature__media">
+			<ScreenshotPlaceholder filename={screenshot} label={label} alt={alt} priority={priority} />
+		</div>
+	</div>
+</section>
+
+<style>
+	.feature {
+		padding: 4.5rem 0;
+	}
+
+	.feature__grid {
+		display: grid;
+		gap: 2.5rem;
+		align-items: center;
+	}
+
+	.feature__copy {
+		display: grid;
+		gap: 0.9rem;
+		max-width: 34rem;
+	}
+
+	.feature__copy h2 {
+		font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+	}
+
+	.feature__copy p {
+		color: var(--text-muted);
+		font-size: 1.05rem;
+	}
+
+	.feature__media {
+		display: flex;
+		justify-content: center;
+	}
+
+	@media (min-width: 880px) {
+		.feature__grid {
+			grid-template-columns: 1.05fr 0.95fr;
+			gap: 3.5rem;
+		}
+
+		.feature--reverse .feature__grid {
+			grid-template-columns: 0.95fr 1.05fr;
+		}
+
+		.feature--reverse .feature__copy {
+			order: 2;
+		}
+
+		.feature--reverse .feature__media {
+			order: 1;
+		}
+	}
+</style>

@@ -1,0 +1,8 @@
+---
+import SeoArticlePage from '../../components/SeoArticlePage.astro';
+import { getArticle } from '../../data/seo-articles';
+
+const article = getArticle('training-video-player-iphone');
+---
+
+<SeoArticlePage article={article} />

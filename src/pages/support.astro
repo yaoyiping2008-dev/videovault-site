@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../data/site';
+import '../styles/legal.css';
+---
+
+<Layout
+	title="Support & Contact"
+	description="Troubleshooting, purchase support, feedback, and contact information for VideoVault."
+	canonicalPath="/support/"
+>
+	<article class="legal container">
+		<nav class="legal__nav" aria-label="Legal">
+			<a href="/">Home</a>
+			<a href={siteConfig.legal.privacy}>Privacy Policy</a>
+			<a href={siteConfig.legal.terms}>Terms of Use</a>
+			<a href={siteConfig.legal.support} aria-current="page">Support</a>
+		</nav>
+
+		<h1>VideoVault Support &amp; Contact</h1>
+		<p class="legal__meta">Help with VideoVault: Media Player for iPhone and iPad.</p>
+
+		<a class="button" href={`mailto:${siteConfig.email}?subject=VideoVault%20Feedback`}>
+			Send Feedback
+		</a>
+		<p>
+			Email:{' '}
+			<a href={`mailto:${siteConfig.email}?subject=VideoVault%20Support`}>{siteConfig.email}</a>
+		</p>
+		<p>We aim to respond to valid support requests within three business days.</p>
+
+		<h2>What we can help with</h2>
+		<ul>
+			<li>Lifetime Pro purchase, entitlement, and Restore Purchase issues</li>
+			<li>Media import, playback, Picture in Picture, and background playback</li>
+			<li>Audio extraction, background music, volume adjustment, recording, export, and sharing</li>
+			<li>Full Library Backup and Restore</li>
+			<li>Bug reports, accessibility issues, and feature suggestions</li>
+			<li>Privacy questions</li>
+		</ul>
+
+		<h2>Information to include</h2>
+		<ul>
+			<li>VideoVault version and build number</li>
+			<li>Device model and iOS/iPadOS version</li>
+			<li>A short description of what happened</li>
+			<li>Steps that reliably reproduce the issue</li>
+			<li>The result you expected</li>
+		</ul>
+		<p>
+			Do not send private media, passwords, Apple Account credentials, payment card information, or
+			sensitive personal information.
+		</p>
+
+		<h2>Backup and data recovery</h2>
+		<p>
+			Deleting VideoVault can remove locally stored media and playlists. Before deleting the app or
+			changing devices, use <strong>Settings → Data &amp; Backup → Export Full Backup</strong> and
+			save the file to iCloud Drive or another external location.
+		</p>
+		<p>
+			<strong>Restore Purchase</strong> restores Lifetime Pro access. It does not restore media. Use
+			<strong> Restore from Backup</strong> to restore media and playlists from a VideoVault backup
+			file.
+		</p>
+
+		<h2>Purchase and refund questions</h2>
+		<p>
+			Lifetime Pro is a non-consumable purchase processed by Apple. For billing or refund requests, use
+			Apple’s purchase support channels. For an entitlement that should be active but is not, first
+			use <strong>Restore Purchase</strong>, then contact us if the issue continues.
+		</p>
+
+		<h2>Privacy</h2>
+		<p>
+			Support email is user-initiated. We use information you send only to respond, investigate the
+			issue, improve VideoVault, and maintain reasonable support records. See the{' '}
+			<a href={siteConfig.legal.privacy}>Privacy Policy</a>.
+		</p>
+	</article>
+</Layout>

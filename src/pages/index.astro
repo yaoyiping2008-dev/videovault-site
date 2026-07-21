@@ -1,11 +1,205 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import FeatureSection from '../components/FeatureSection.astro';
+import { features, siteConfig } from '../data/site';
+import { articlePath, seoArticles } from '../data/seo-articles';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: siteConfig.name,
+	applicationCategory: 'MultimediaApplication',
+	operatingSystem: 'iOS, iPadOS',
+	description: siteConfig.description,
+	offers: {
+		'@type': 'Offer',
+		price: '0',
+		priceCurrency: 'USD',
+		description: 'Free to download. Lifetime Pro available as an optional one-time in-app purchase.',
+	},
+};
 ---
 
 <Layout>
-	<Welcome />
+	<script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	<Hero />
+
+	<section class="privacy-band" aria-label="Privacy promise">
+		<div class="container">
+			<h2>Files stay on your device</h2>
+			<p>
+				VideoVault does not require an account and does not upload your videos, audio, playlists,
+				or backups to a developer-operated server.
+			</p>
+		</div>
+	</section>
+
+	<div id="features">
+		{
+			features.map((feature, index) => (
+				<FeatureSection
+					id={feature.id}
+					title={feature.title}
+					description={feature.description}
+					screenshot={feature.screenshot}
+					label={feature.label}
+					alt={feature.alt}
+					reverse={index % 2 === 1}
+					priority={index === 0}
+				/>
+			))
+		}
+	</div>
+
+	<section class="guides" id="guides" aria-labelledby="guides-heading">
+		<div class="container guides__inner">
+			<h2 id="guides-heading">Guides</h2>
+			<p>Practical how-tos for local playback, audio tools, and playlists on iPhone.</p>
+			<ul class="guides__list">
+				{
+					seoArticles.map((article) => (
+						<li>
+							<a href={articlePath(article.slug)}>{article.title}</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section class="pro" id="pro">
+		<div class="container pro__inner">
+			<h2>Lifetime Pro — unlock once</h2>
+			<p>
+				Unlock background playback, Picture in Picture, media tools, recording, and Export &amp;
+				Share with a one-time purchase. No subscription.
+			</p>
+			<ul>
+				<li>Background playback &amp; lock screen controls</li>
+				<li>Extract audio, add music, adjust volume, record</li>
+				<li>Export &amp; Share via the iOS share sheet</li>
+				<li>Restore Purchase anytime with your Apple Account</li>
+			</ul>
+			{
+				siteConfig.appStoreUrl ? (
+					<a class="btn btn-primary" href={siteConfig.appStoreUrl}>
+						Get VideoVault
+					</a>
+				) : (
+					<a class="btn btn-primary" href={`mailto:${siteConfig.email}?subject=VideoVault%20Inquiry`}>
+						Contact us
+					</a>
+				)
+			}
+		</div>
+	</section>
 </Layout>
+
+<style>
+	.privacy-band {
+		padding: 3rem 0;
+		border-block: 1px solid var(--line);
+		background: linear-gradient(180deg, rgba(62, 200, 255, 0.05), transparent);
+	}
+
+	.privacy-band h2 {
+		font-size: clamp(1.5rem, 2.8vw, 2rem);
+		margin-bottom: 0.65rem;
+	}
+
+	.privacy-band p {
+		max-width: 42rem;
+		color: var(--text-muted);
+	}
+
+	.guides {
+		padding: 3.5rem 0 1rem;
+	}
+
+	.guides__inner {
+		display: grid;
+		gap: 0.75rem;
+		padding-top: 0.5rem;
+		border-top: 1px solid var(--line);
+	}
+
+	.guides__inner h2 {
+		font-size: clamp(1.5rem, 2.8vw, 2rem);
+	}
+
+	.guides__inner > p {
+		color: var(--text-muted);
+		max-width: 40rem;
+	}
+
+	.guides__list {
+		list-style: none;
+		margin: 0.6rem 0 0;
+		padding: 0;
+		display: grid;
+		gap: 0.55rem;
+	}
+
+	.guides__list a {
+		color: var(--text);
+		text-decoration: none;
+		font-weight: 600;
+	}
+
+	.guides__list a:hover {
+		color: var(--accent);
+	}
+
+	.pro {
+		padding: 4.5rem 0 2rem;
+	}
+
+	.pro__inner {
+		display: grid;
+		gap: 1rem;
+		padding: 2.4rem 0;
+		border-top: 1px solid var(--line);
+		animation: rise-in 0.7s ease both;
+	}
+
+	.pro__inner h2 {
+		font-size: clamp(1.8rem, 3.2vw, 2.45rem);
+	}
+
+	.pro__inner > p {
+		max-width: 40rem;
+		color: var(--text-muted);
+	}
+
+	.pro__inner ul {
+		margin: 0.4rem 0 0.8rem;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 0.55rem;
+		max-width: 36rem;
+	}
+
+	.pro__inner li {
+		position: relative;
+		padding-left: 1.2rem;
+		color: var(--text);
+	}
+
+	.pro__inner li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.62em;
+		width: 0.45rem;
+		height: 0.45rem;
+		border-radius: 50%;
+		background: var(--accent);
+	}
+
+	.pro__inner .btn {
+		justify-self: start;
+		margin-top: 0.35rem;
+	}
+</style>
