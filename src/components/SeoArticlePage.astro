@@ -88,13 +88,17 @@ const breadcrumbLd = {
 			<p class="seo__intro">{article.intro}</p>
 		</header>
 
-		<div class="seo__media">
-			<ScreenshotPlaceholder
-				filename={article.screenshot.filename}
-				label={article.screenshot.label}
-				alt={article.screenshot.alt}
-			/>
-		</div>
+		{
+			article.screenshot && (
+				<div class="seo__media">
+					<ScreenshotPlaceholder
+						filename={article.screenshot.filename}
+						label={article.screenshot.label}
+						alt={article.screenshot.alt}
+					/>
+				</div>
+			)
+		}
 
 		<section class="seo__section" aria-labelledby="scenarios-heading">
 			<h2 id="scenarios-heading">Real-world scenarios</h2>
@@ -172,8 +176,9 @@ const breadcrumbLd = {
 		<section class="seo__cta" aria-labelledby="cta-heading">
 			<h2 id="cta-heading">Get VideoVault on the App Store</h2>
 			<p>
-				Import local video and audio, organize playlists, extract M4A audio, and unlock
-				background playback with a one-time Lifetime Pro purchase — no subscription.
+				Play, edit, and organize local video and audio with Private Lists, Video Studio,
+				Audio Tools, and advanced playback. Pro is available monthly, yearly, or as a
+				one-time Lifetime purchase.
 			</p>
 			{
 				appStoreUrl ? (

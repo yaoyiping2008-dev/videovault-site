@@ -12,12 +12,20 @@ const jsonLd = {
 	applicationCategory: 'MultimediaApplication',
 	operatingSystem: 'iOS, iPadOS',
 	description: siteConfig.description,
-	offers: {
-		'@type': 'Offer',
-		price: '0',
-		priceCurrency: 'USD',
-		description: 'Free to download. Lifetime Pro available as an optional one-time in-app purchase.',
-	},
+	offers: [
+		{
+			'@type': 'Offer',
+			name: 'VideoVault Pro Monthly',
+			price: '0.99',
+			priceCurrency: 'USD',
+		},
+		{
+			'@type': 'Offer',
+			name: 'VideoVault Pro Yearly',
+			price: '9.99',
+			priceCurrency: 'USD',
+		},
+	],
 };
 ---
 
@@ -29,13 +37,13 @@ const jsonLd = {
 		<div class="container">
 			<h2>Files stay on your device</h2>
 			<p>
-				VideoVault does not require an account and does not upload your videos, audio, playlists,
+				VideoVault does not require an account and does not upload your videos, audio, Private Lists,
 				or backups to a developer-operated server.
 			</p>
 		</div>
 	</section>
 
-	<div id="features">
+	<div id="features" aria-label="VideoVault features">
 		{
 			features.map((feature, index) => (
 				<FeatureSection
@@ -45,6 +53,7 @@ const jsonLd = {
 					screenshot={feature.screenshot}
 					label={feature.label}
 					alt={feature.alt}
+					highlights={'highlights' in feature ? feature.highlights : undefined}
 					reverse={index % 2 === 1}
 					priority={index === 0}
 				/>
@@ -52,10 +61,34 @@ const jsonLd = {
 		}
 	</div>
 
+	<section class="platform" aria-labelledby="platform-heading">
+		<div class="container platform__grid">
+			<div>
+				<p class="section-kicker">A workspace that feels like yours</p>
+				<h2 id="platform-heading">Four themes. More room on iPad.</h2>
+				<p>
+					Choose the appearance that suits your media, then move comfortably between Player,
+					Video Studio, Audio Tools, Web Import, and Private Lists. VideoVault 1.0.4 is
+					optimized for both iPhone and iPad layouts.
+				</p>
+			</div>
+			<div class="theme-showcase" aria-label="Four appearance themes">
+				<div class="theme-swatches" aria-hidden="true">
+					<span class="theme-dot theme-dot--pearl"></span>
+					<span class="theme-dot theme-dot--midnight"></span>
+					<span class="theme-dot theme-dot--sunset"></span>
+					<span class="theme-dot theme-dot--ocean"></span>
+				</div>
+				<strong>Four appearance themes</strong>
+				<span>Choose the look that works for your space and media.</span>
+			</div>
+		</div>
+	</section>
+
 	<section class="guides" id="guides" aria-labelledby="guides-heading">
 		<div class="container guides__inner">
 			<h2 id="guides-heading">Guides</h2>
-			<p>Practical how-tos for local playback, audio tools, and playlists on iPhone.</p>
+			<p>Practical how-tos for focused playback, video editing, audio tools, and private media organization.</p>
 			<ul class="guides__list">
 				{
 					seoArticles.map((article) => (
@@ -68,18 +101,37 @@ const jsonLd = {
 		</div>
 	</section>
 
-	<section class="pro" id="pro">
+	<section class="pro" id="pro" aria-labelledby="pro-heading">
 		<div class="container pro__inner">
-			<h2>Lifetime Pro — unlock once</h2>
+			<p class="section-kicker">VideoVault Pro</p>
+			<h2 id="pro-heading">Choose the plan that fits</h2>
 			<p>
-				Unlock background playback, Picture in Picture, media tools, recording, and Export &amp;
-				Share with a one-time purchase. No subscription.
+				Unlock advanced playback, Video Studio, Audio Tools, and the complete media workflow.
+				Prices below are in USD; the App Store shows the final local price before purchase.
 			</p>
-			<ul>
-				<li>Background playback &amp; lock screen controls</li>
-				<li>Extract audio, add music, adjust volume, record</li>
-				<li>Export &amp; Share via the iOS share sheet</li>
-				<li>Restore Purchase anytime with your Apple Account</li>
+			<div class="pricing" aria-label="VideoVault Pro plans">
+				<article class="price-card">
+					<h3>Monthly</h3>
+					<p class="price"><strong>$0.99</strong><span>/ month</span></p>
+					<p>Eligible new Monthly subscribers may receive a 7-day free trial.</p>
+				</article>
+				<article class="price-card">
+					<h3>Yearly</h3>
+					<p class="price"><strong>$9.99</strong><span>/ year</span></p>
+					<p>One annual payment for continued access to Pro features.</p>
+				</article>
+				<article class="price-card price-card--featured">
+					<p class="price-card__badge">One-time option</p>
+					<h3>Lifetime Pro</h3>
+					<p class="price"><strong>Lifetime Pro</strong><span>— one-time purchase</span></p>
+					<p>The App Store shows the current price before purchase.</p>
+				</article>
+			</div>
+			<ul class="pro__features">
+				<li>A-B Repeat, Video Bookmarks, background playback, and Picture in Picture</li>
+				<li>Video Studio with Trim, Crop, 9:16, Text, Logo, and Hide Area</li>
+				<li>Audio extraction, background music, volume adjustment, and recording</li>
+				<li>Restore eligible purchases or subscriptions with your Apple Account</li>
 			</ul>
 			{
 				siteConfig.appStoreUrl ? (
@@ -100,7 +152,7 @@ const jsonLd = {
 	.privacy-band {
 		padding: 3rem 0;
 		border-block: 1px solid var(--line);
-		background: linear-gradient(180deg, rgba(62, 200, 255, 0.05), transparent);
+		background: linear-gradient(180deg, rgba(255, 159, 67, 0.07), transparent);
 	}
 
 	.privacy-band h2 {
@@ -116,6 +168,32 @@ const jsonLd = {
 	.guides {
 		padding: 3.5rem 0 1rem;
 	}
+
+	.platform {
+		padding: 4.5rem 0 2rem;
+	}
+
+	.platform__grid {
+		display: grid;
+		gap: 2rem;
+		align-items: center;
+		padding: clamp(1.5rem, 4vw, 3rem);
+		border: 1px solid var(--line);
+		border-radius: 28px;
+		background: linear-gradient(135deg, rgba(255, 159, 67, 0.09), rgba(199, 109, 255, 0.08));
+	}
+
+	.platform h2 { font-size: clamp(1.8rem, 3.2vw, 2.65rem); margin: 0.35rem 0 0.8rem; }
+	.platform p { color: var(--text-muted); max-width: 44rem; }
+	.section-kicker { color: var(--accent); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.78rem; }
+	.theme-showcase { display: grid; gap: .55rem; }
+	.theme-showcase > span { color: var(--text-muted); font-size: .9rem; }
+	.theme-swatches { display: flex; gap: .7rem; margin-bottom: .25rem; }
+	.theme-dot { width: 2.1rem; height: 2.1rem; border: 2px solid rgba(255,255,255,.22); border-radius: 50%; flex: 0 0 auto; }
+	.theme-dot--pearl { background: #f4f1eb; }
+	.theme-dot--midnight { background: #171624; }
+	.theme-dot--sunset { background: linear-gradient(135deg, #ff8a3d, #cb4d9b); }
+	.theme-dot--ocean { background: linear-gradient(135deg, #25b8d7, #315dc2); }
 
 	.guides__inner {
 		display: grid;
@@ -172,7 +250,7 @@ const jsonLd = {
 		color: var(--text-muted);
 	}
 
-	.pro__inner ul {
+	.pro__features {
 		margin: 0.4rem 0 0.8rem;
 		padding: 0;
 		list-style: none;
@@ -181,13 +259,13 @@ const jsonLd = {
 		max-width: 36rem;
 	}
 
-	.pro__inner li {
+	.pro__features li {
 		position: relative;
 		padding-left: 1.2rem;
 		color: var(--text);
 	}
 
-	.pro__inner li::before {
+	.pro__features li::before {
 		content: '';
 		position: absolute;
 		left: 0;
@@ -201,5 +279,19 @@ const jsonLd = {
 	.pro__inner .btn {
 		justify-self: start;
 		margin-top: 0.35rem;
+	}
+
+	.pricing { display: grid; gap: 1rem; margin: 0.8rem 0; }
+	.price-card { position: relative; display: grid; align-content: start; gap: 0.65rem; padding: 1.4rem; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.035); }
+	.price-card--featured { border-color: rgba(255,159,67,.55); background: linear-gradient(145deg, rgba(255,159,67,.12), rgba(199,109,255,.08)); }
+	.price-card h3 { font-size: 1.15rem; }
+	.price-card p { color: var(--text-muted); }
+	.price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.4rem; }
+	.price strong { color: var(--text); font-family: var(--font-display); font-size: 2rem; }
+	.price-card__badge { color: var(--accent) !important; font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+
+	@media (min-width: 760px) {
+		.platform__grid { grid-template-columns: 1.35fr .65fr; }
+		.pricing { grid-template-columns: repeat(3, 1fr); }
 	}
 </style>

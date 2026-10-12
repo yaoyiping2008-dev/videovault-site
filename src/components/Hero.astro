@@ -1,125 +1,64 @@
 ---
-import ScreenshotPlaceholder from './ScreenshotPlaceholder.astro';
 import { siteConfig } from '../data/site';
-
 const appStoreUrl = siteConfig.appStoreUrl;
 ---
 
 <section class="hero">
-	<div class="container hero__grid">
+	<div class="container hero__inner">
 		<div class="hero__copy">
-			<p class="hero__brand">{siteConfig.name}</p>
-			<h1>Your private media vault, on device.</h1>
+			<p class="hero__eyebrow">Video &amp; Audio Player + Media Studio</p>
+			<h1>Play. Edit. Organize.</h1>
 			<p class="hero__lede">
-				Import local video and audio, organize playlists, play in the background, and run
-				lightweight tools — without an account or cloud upload.
+				A focused player and practical video and audio tools for iPhone and iPad — from
+				background playback and A-B Repeat to vertical crops, audio tools, and Private Lists.
 			</p>
 			<div class="hero__actions">
 				{
 					appStoreUrl ? (
-						<a class="btn btn-primary" href={appStoreUrl}>
-							Download on the App Store
-						</a>
+						<a class="btn btn-primary" href={appStoreUrl}>Download on the App Store</a>
 					) : (
-						<a class="btn btn-primary" href={siteConfig.legal.support}>
-							Get support
-						</a>
+						<a class="btn btn-primary" href={siteConfig.legal.support}>Get VideoVault</a>
 					)
 				}
-				<a class="btn btn-secondary" href="#features">See features</a>
+				<a class="btn btn-secondary" href="#player">Explore 1.0.4</a>
 			</div>
 		</div>
-		<div class="hero__visual" aria-hidden={false}>
-			<ScreenshotPlaceholder
-				filename="library.png"
-				label="Library Screenshot"
-				alt="VideoVault library screenshot"
-				priority
+		<figure class="hero__visual">
+			<img
+				src="/screenshots/videovault-hero-104.webp"
+				alt="VideoVault 1.0.4 player with Capture Frame, A-B Repeat, Video Bookmarks, AirPlay, Web Import, and media tools"
+				width="2868"
+				height="1320"
+				loading="eager"
+				fetchpriority="high"
+				decoding="async"
 			/>
-		</div>
+		</figure>
 	</div>
 </section>
 
 <style>
-	.hero {
-		position: relative;
-		padding: 3.5rem 0 2rem;
-		overflow: clip;
-	}
-
+	.hero { position: relative; padding: clamp(3.5rem, 7vw, 6.5rem) 0 3rem; overflow: clip; }
 	.hero::before {
-		content: '';
-		position: absolute;
-		inset: 8% -20% auto;
-		height: 55%;
-		background:
-			radial-gradient(ellipse at center, rgba(62, 200, 255, 0.16), transparent 65%);
-		pointer-events: none;
-		z-index: -1;
+		content: ''; position: absolute; inset: -20% -15% auto; height: 78%;
+		background: radial-gradient(ellipse at 25% 35%, rgba(255, 126, 48, 0.2), transparent 48%), radial-gradient(ellipse at 72% 28%, rgba(191, 79, 255, 0.18), transparent 50%);
+		pointer-events: none; z-index: -1;
 	}
-
-	.hero__grid {
-		display: grid;
-		gap: 2.75rem;
-		align-items: center;
-		min-height: min(78vh, 720px);
+	.hero__inner, .hero__copy { display: grid; }
+	.hero__inner { gap: 2.6rem; }
+	.hero__copy { gap: 1rem; max-width: 760px; animation: rise-in 0.7s ease both; }
+	.hero__eyebrow { color: var(--accent); font-size: 0.86rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+	.hero h1 {
+		font-size: clamp(3rem, 9vw, 6.6rem); line-height: 0.92;
+		background: linear-gradient(110deg, #fff 10%, #ffd1ae 48%, #d7a8ff 82%);
+		-webkit-background-clip: text; background-clip: text; color: transparent;
 	}
-
-	.hero__copy {
-		display: grid;
-		gap: 1.15rem;
-		max-width: 36rem;
-		animation: rise-in 0.7s ease both;
-	}
-
-	.hero__brand {
-		font-family: var(--font-display);
-		font-size: clamp(2rem, 5vw, 3.1rem);
-		font-weight: 800;
-		letter-spacing: -0.04em;
-		line-height: 1;
-		background: linear-gradient(120deg, #eff8ff 10%, var(--accent) 55%, #b8a6ff 100%);
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
-	}
-
-	.hero__copy h1 {
-		font-size: clamp(1.55rem, 3.2vw, 2.15rem);
-		font-weight: 700;
-		color: var(--text);
-		max-width: 18ch;
-	}
-
-	.hero__lede {
-		color: var(--text-muted);
-		font-size: 1.08rem;
-		max-width: 38ch;
-	}
-
-	.hero__actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.75rem;
-		margin-top: 0.35rem;
-	}
-
+	.hero__lede { max-width: 64ch; color: var(--text-muted); font-size: clamp(1.05rem, 2vw, 1.25rem); }
+	.hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.4rem; }
 	.hero__visual {
-		display: flex;
-		justify-content: center;
-		animation:
-			rise-in 0.85s ease 0.12s both,
-			float-soft 7s ease-in-out 1s infinite;
+		margin: 0; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: clamp(18px, 3vw, 34px);
+		overflow: hidden; background: var(--bg-elevated); box-shadow: 0 36px 100px rgba(0, 0, 0, 0.42);
+		animation: rise-in 0.85s ease 0.1s both;
 	}
-
-	@media (min-width: 900px) {
-		.hero__grid {
-			grid-template-columns: 1.1fr 0.9fr;
-			gap: 2rem;
-		}
-
-		.hero__visual {
-			justify-content: flex-end;
-		}
-	}
+	.hero__visual img { width: 100%; height: auto; }
 </style>

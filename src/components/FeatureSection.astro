@@ -5,15 +5,25 @@ interface Props {
 	id: string;
 	title: string;
 	description: string;
-	screenshot: string;
+	screenshot: string | null;
 	label: string;
 	alt: string;
+	highlights?: readonly string[];
 	reverse?: boolean;
 	priority?: boolean;
 }
 
-const { id, title, description, screenshot, label, alt, reverse = false, priority = false } =
-	Astro.props;
+const {
+	id,
+	title,
+	description,
+	screenshot,
+	label,
+	alt,
+	highlights = [],
+	reverse = false,
+	priority = false,
+} = Astro.props;
 ---
 
 <section class:list={['feature', reverse && 'feature--reverse']} id={id}>
@@ -23,7 +33,18 @@ const { id, title, description, screenshot, label, alt, reverse = false, priorit
 			<p>{description}</p>
 		</div>
 		<div class="feature__media">
-			<ScreenshotPlaceholder filename={screenshot} label={label} alt={alt} priority={priority} />
+			{
+				screenshot ? (
+					<ScreenshotPlaceholder filename={screenshot} label={label} alt={alt} priority={priority} />
+				) : (
+					<div class="feature__panel" role="img" aria-label={alt}>
+						<p>{label}</p>
+						<ul>
+							{highlights.map((item) => <li>{item}</li>)}
+						</ul>
+					</div>
+				)
+			}
 		</div>
 	</div>
 </section>
@@ -57,6 +78,39 @@ const { id, title, description, screenshot, label, alt, reverse = false, priorit
 	.feature__media {
 		display: flex;
 		justify-content: center;
+	}
+
+	.feature__panel {
+		width: min(100%, 410px);
+		padding: clamp(1.5rem, 4vw, 2.4rem);
+		border: 1px solid rgba(255, 255, 255, 0.13);
+		border-radius: 26px;
+		background: linear-gradient(145deg, rgba(255, 159, 67, 0.11), rgba(199, 109, 255, 0.09));
+		box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+	}
+
+	.feature__panel > p {
+		font-family: var(--font-display);
+		font-size: 1.35rem;
+		font-weight: 700;
+	}
+
+	.feature__panel ul {
+		list-style: none;
+		padding: 0;
+		margin: 1.25rem 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+	}
+
+	.feature__panel li {
+		padding: 0.55rem 0.8rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: rgba(255, 255, 255, 0.05);
+		font-size: 0.88rem;
+		font-weight: 650;
 	}
 
 	@media (min-width: 880px) {

@@ -1,6 +1,4 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { siteConfig } from '../data/site';
@@ -34,10 +32,7 @@ const normalizedPath = canonicalPath.endsWith('/')
 		: `${canonicalPath}/`;
 const canonical = new URL(normalizedPath, `${siteOrigin}/`).href;
 
-const homeOgPath = path.join(process.cwd(), 'public', 'og', 'home.jpg');
-const resolvedOgPath =
-	ogImagePath ??
-	(fs.existsSync(homeOgPath) ? '/og/home.jpg' : '/app-icon.png');
+const resolvedOgPath = ogImagePath ?? '/og/home.jpg';
 const ogImage = new URL(resolvedOgPath, `${siteOrigin}/`).href;
 ---
 
@@ -50,11 +45,10 @@ const ogImage = new URL(resolvedOgPath, `${siteOrigin}/`).href;
 		<title>{pageTitle}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<link rel="icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<meta name="theme-color" content="#0c1017" />
+		<meta name="theme-color" content="#100b18" />
 		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content={siteConfig.name} />
 		<meta property="og:title" content={pageTitle} />
